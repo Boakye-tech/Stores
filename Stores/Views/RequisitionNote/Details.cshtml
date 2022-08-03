@@ -1,0 +1,220 @@
+@model Stores.ViewModels.RequisitionViewModel
+
+@{ ViewData["Title"] = "Details"; }
+
+<head>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    <script type="text/javascript" lang="javascript">function CalculateValue(e) {
+            if (e.keyCode == 13) {
+                var focusedtxt = $(':focus');
+
+                var row = $(focusedtxt).closest("TR");
+
+                var qtyrequested = parseInt($("TD", row).eq(3).find("input").val());
+                var qtyissued = parseInt($("TD", row).eq(4).find("input").val());
+                var unitprice = parseFloat($("TD", row).eq(5).find("input").val());
+
+                if (qtyissued > qtyrequested) {
+                    alert("Sorry the quantity issued cannot be more than the quantity requested");
+                    $("TD", row).eq(4).find("input").val("0");
+                    return;
+                }
+                else {
+                    var value = (qtyissued * unitprice);
+                    $("TD", row).eq(6).find("input").val(value);
+                }
+
+            }
+        }</script>
+
+    @*
+            <script>
+                $("#txtQuantityRequested_0").focusout(function () {
+                        var username = $("#txtQuantityRequested_0").val();
+                        alert("Focus worked");
+
+                    });
+            </script>
+
+        <script type="text/javascript" lang="javascript">
+        function TestLostFocus() {
+            $("txtQuantityRequested_0").blur(function () {
+                var currInput = this;
+                console.log(currInput);
+                alert("worked");
+            });
+                };</script>
+    *@
+
+    <script type="text/javascript" lang="javascript">
+
+        $("body").on("click", "#btnApproveNote", function () {
+
+        var RequisitionNotes = new Array();
+
+        //Loop through the Table rows and build a JSON array.
+        $("#tblItemsRequested TBODY TR").each(function () {
+            var row = $(this);
+
+            console.log(row);
+
+            var RequisitionNote = {
+                RequisitionNumber: $("#txtRequistionNumber").val(),
+                RequisitionDate: $("#dtRequisitonDate").val(),
+                LocationCode: $("#cboLocation").val(),
+                DepartmentCode: parseInt($("#cboDepartment").val()),
+                StaffIdentificationNumber: $("#cboStaff").val(),
+
+                ItemCode: row.find("TD").eq(0).html().slice(-4),
+                UnitId: parseInt(row.find("TD").eq(1).html().slice(-1)),
+                QuantityRequested: parseInt(row.find("TD").eq(2).html()),
+                QuantityApproved: parseInt(row.find("TD").eq(3).html()), 
+                QuantityIssued: parseInt(row.find("TD").eq(3).html()),
+                UnitPrice: parseFloat(row.find("TD").eq(4).html()),
+                BinCardNumber: row.find("TD").eq(5).html(),
+                Remarks: row.find("TD").eq(6).html(),
+
+                /*UnitPrice: parseFloat($("#txtUnitPrice").val()),*/
+                Value: parseFloat($("#txtValue").val()),
+
+                FHODAuthorization: "dev",
+                FHODAuthorizationDate: $("#dtRequisitonDate").val(),
+
+                IssuedBy: " ",
+                IssuedDate: $("#dtRequisitonDate").val(),
+
+                Status: "Pending Issue",
+            }
+
+            RequisitionNotes.push(RequisitionNote);
+
+        });
+
+        ///Send the JSON array to Controller using AJAX.
+        console.log(RequisitionNotes);
+
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("ApprovedRecords")",
+                    headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                    contentType: "application/json",
+                    dataType: "json",
+                    data: JSON.stringify(RequisitionNotes),
+                    success: function (r) {
+                        alert(r + " record(s) approved.");
+                    },
+                    error: function (e) {
+                        console.log(e);
+                    }
+
+                });
+        });
+    </script>
+
+</head>
+
+<h1>Details</h1>
+
+<div>
+    <h4>RequisitionNote</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-auto">
+            @Html.DisplayNameFor(model => model.RequisitionNumber)
+        </dt>
+        <dd class="col-sm-auto">
+            @Html.DisplayFor(model => model.RequisitionNumber)
+        </dd>
+        <dt class="col-sm-auto">
+            @Html.DisplayNameFor(model => model.RequisitionDate)
+        </dt>
+        <dd class="col-sm-auto">
+            @Html.DisplayFor(model => model.RequisitionDate)
+        </dd>
+        <dt class="col-sm-auto">
+            @Html.DisplayNameFor(model => model.Location)
+        </dt>
+        <dd class="col-sm-auto">
+            @Html.DisplayFor(model => model.Location)
+        </dd>
+    </dl>
+
+    <dl class="row">
+        <dt class="col-sm-auto">
+            @Html.DisplayNameFor(model => model.Department)
+        </dt>
+        <dd class="col-sm-auto">
+            @Html.DisplayFor(model => model.Department)
+        </dd>
+
+        <dt class="col-sm-auto">
+            @Html.DisplayNameFor(model => model.FullName)
+        </dt>
+        <dd class="col-sm-auto">
+            @Html.DisplayFor(model => model.FullName)
+        </dd>
+        <dt class="col-sm-auto">
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd class="col-sm-auto">
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+
+    </dl>
+</div>
+
+<table class="table" id="tblItemsRequested">
+    <thead>
+        <tr>
+            <th style="width:100px">BIN CARD NO.</th>
+            <th style="width:200px">ITEM DESCRIPTION</th>
+            <th style="width:100px">UNIT</th>
+            <th style="width:100px">QTY REQD.</th>
+            <th style="width:100px">QTY ISSUED</th>
+            <th style="width:100px">PRICE</th>
+            <th style="width:100px">VALUE</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.requisitionDetails != null)
+        {
+            for (var i = 0; i < Model.requisitionDetails.Count(); i++)
+            {
+    <tr class="row-md-12">
+        @Html.HiddenFor(x => Model.requisitionDetails[i].RequisitionNumber)
+        <td class="col-md-1.5">
+            @Html.TextBoxFor(x => Model.requisitionDetails[i].BinCardNumber, new { @class = "form-control", @readonly = "readonly"})
+        </td>
+        <td class="col-md-4">
+            @Html.TextBoxFor(x => Model.requisitionDetails[i].ItemDescription, new { @class = "form-control", @readonly = "readonly" })
+        </td>
+        <td class="col-md-1.5">
+            @Html.TextBoxFor(x => Model.requisitionDetails[i].MeasureUnit, new { @class = "form-control", @readonly = "readonly" })
+        </td>
+        <td class="col-md-1">
+            @Html.TextBoxFor(x => Model.requisitionDetails[i].QuantityRequested, new { @class = "form-control", @readonly = "readonly", @id = "txtQuantityRequested" + "_" + i.ToString() })
+        </td>
+        <td class="col-md-1">
+            @Html.TextBoxFor(x => Model.requisitionDetails[i].QuantityIssued, new { @class = "form-control", @id="txtQuantityIssued" + "_" + i.ToString(), @type="number", @onkeydown = "CalculateValue(event);" })
+        </td>
+        <td class="col-md-1.5">
+            @Html.TextBoxFor(x => Model.requisitionDetails[i].UnitPrice, new { @class = "form-control", @id= "txtUnitPrice" + "_" + i.ToString(), @type = "number", @readonly = "readonly" })
+        </td>
+        <td class="col-md-1.5">
+            @Html.TextBoxFor(x => Model.requisitionDetails[i].Value, new { @class = "form-control", @readonly = "readonly", @id= "txtValue" + "_" + i.ToString() })
+        </td>
+    </tr>
+            }
+        }
+
+    </tbody>
+</table>
+<hr />
+<div class="form-group">
+    <input type="button" id="btnApproveNote" value="Approve Order" class="btn btn-primary" />
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.RequisitionNumber">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

@@ -1,0 +1,494 @@
+@model Stores.ViewModels.RequisitionNoteVM
+
+@{ ViewData["Title"] = "Create"; }
+
+<head>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+</head>
+
+@*<h1>Create</h1>*@
+
+
+<h4 class="text-center">REQUISITION NOTE</h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form method="post" asp-action="InsertRecords" id="frmRequisition">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <div class="row form-row">
+                    <div class="col-md-6">
+                        <label asp-for="RequisitionNote.LocationCode" class="control-label"></label>
+                        <select asp-for="RequisitionNote.LocationCode" class="form-control" asp-items="@Model.LocationDropDown" id="cboLocation">
+                            <option selected>--Select a location--</option>
+                        </select>
+                        <span asp-validation-for="RequisitionNote.LocationCode" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label asp-for="RequisitionNote.RequisitionNumber" class="control-label"></label>
+                        <input asp-for="RequisitionNote.RequisitionNumber" class="form-control" id="txtRequistionNumber" />
+                        <span asp-validation-for="RequisitionNote.RequisitionNumber" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label asp-for="RequisitionNote.RequisitionDate" class="control-label"></label>
+                        <input type="date" asp-for="RequisitionNote.RequisitionDate" class="form-control" id="dtRequisitonDate" />
+                        <span asp-validation-for="RequisitionNote.RequisitionDate" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <div class="row form-row">
+                    <div class="col-md-4">
+                        <label asp-for="RequisitionNote.DepartmentCode" class="control-label"></label>
+                        <select asp-for="RequisitionNote.DepartmentCode" class="form-control" asp-items="@Model.DepartmentDropDown" id="cboDepartment">
+                            <option selected>--Select a department--</option>
+                        </select>
+                        <span asp-validation-for="RequisitionNote.DepartmentCode" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-8">
+                        <label asp-for="RequisitionNote.StaffIdentificationNumber" class="control-label"></label>
+                        <select asp-for="RequisitionNote.StaffIdentificationNumber" class="form-control" asp-items="@Model.StaffDropDown" id="cboStaff">
+                            <option selected>--Select full name--</option>
+                        </select>
+                        <span asp-validation-for="RequisitionNote.StaffIdentificationNumber" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label asp-for="RequisitionNote.ItemCode" class="control-label"></label>
+                        <select asp-for="RequisitionNote.ItemCode" class="form-control" asp-items="@Model.ItemDropDown" id="cboItems">
+                            <option selected>~Select an item~</option>
+                        </select>
+                        <span asp-validation-for="RequisitionNote.ItemCode" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label asp-for="RequisitionNote.BinCardNumber" class="control-label"></label>
+                        <input asp-for="RequisitionNote.BinCardNumber" class="form-control" id="txtBinCardNumber" />
+                        <span asp-validation-for="RequisitionNote.BinCardNumber" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label asp-for="RequisitionNote.UnitName" class="control-label"></label>
+                        <input asp-for="RequisitionNote.UnitName" class="form-control" id="txtMeasuringUnit" />
+                        <span asp-validation-for="RequisitionNote.UnitName" class="text-danger"></span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-3">
+                        <label asp-for="RequisitionNote.QuantityRequested" class="control-label"></label>
+                        <input asp-for="RequisitionNote.QuantityRequested" class="form-control" id="txtQuantityRequested" />
+                        <span asp-validation-for="RequisitionNote.QuantityRequested" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-3">
+                        <label asp-for="RequisitionNote.QuantityIssued" class="control-label"></label>
+                        <input asp-for="RequisitionNote.QuantityIssued" class="form-control" id="txtQuantityIssued" />
+                        <span asp-validation-for="RequisitionNote.QuantityIssued" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-3">
+                        <label asp-for="RequisitionNote.UnitPrice" class="control-label"></label>
+                        <input asp-for="RequisitionNote.UnitPrice" class="form-control" id="txtUnitPrice" />
+                        <span asp-validation-for="RequisitionNote.UnitPrice" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-3">
+                        <label asp-for="RequisitionNote.Value" class="control-label"></label>
+                        <input asp-for="RequisitionNote.Value" class="form-control" id="txtValue" />
+                        <span asp-validation-for="RequisitionNote.Value" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <div class="row">
+                    &nbsp;&nbsp;&nbsp;&nbsp;<label asp-for="RequisitionNote.Remarks" class="control-label"></label>
+                    <div class="input-group col-md-12">
+                        <input asp-for="RequisitionNote.Remarks" class="form-control" id="txtRemarks" />
+                        @*<span asp-validation-for="RequisitionNote.Remarks" class="text-danger"></span>*@
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <div class="input-group-append">
+                            <input type="button" id="btnAdd" value="Add" class="btn btn-secondary btn-md" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <table id="tblItemsRequested" class="table table-striped" cellpadding="0" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th style="width:250px">ITEM DESCRIPTION</th>
+                        <th style="width:150px">UNIT</th>
+                        <th style="width:150px">QTY REQD.</th>
+                        <th style="width:150px">QTY ISSUED</th>
+                        <th style="width:150px">UNIT COST</th>
+                        <th style="width:180px">BIN CARD NO.</th>
+                        <th style="width:200px">REMARKS</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                <tfoot>
+
+                </tfoot>
+            </table>
+
+
+
+
+            <!--
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-7">
+                                <label asp-for="RequisitionNote.HODAuthorization" class="control-label"></label>
+                                <input asp-for="RequisitionNote.HODAuthorization" class="form-control" />
+                                <span asp-validation-for="RequisitionNote.HODAuthorization" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-5">
+                                <label asp-for="RequisitionNote.HODAuthorizationDate" class="control-label"></label>
+                                <input asp-for="RequisitionNote.HODAuthorizationDate" class="form-control" />
+                                <span asp-validation-for="RequisitionNote.HODAuthorizationDate" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-7">
+                                <label asp-for="RequisitionNote.SHODAuthorization" class="control-label"></label>
+                                <input asp-for="RequisitionNote.SHODAuthorization" class="form-control" />
+                                <span asp-validation-for="RequisitionNote.SHODAuthorization" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-5">
+                                <label asp-for="RequisitionNote.SHODAuthorizationDate" class="control-label"></label>
+                                <input asp-for="RequisitionNote.SHODAuthorizationDate" class="form-control" />
+                                <span asp-validation-for="RequisitionNote.SHODAuthorizationDate" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-7">
+                                <label asp-for="RequisitionNote.FHODAuthorization" class="control-label"></label>
+                                <input asp-for="RequisitionNote.FHODAuthorization" class="form-control" />
+                                <span asp-validation-for="RequisitionNote.FHODAuthorization" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-5">
+                                <label asp-for="RequisitionNote.FHODAuthorizationDate" class="control-label"></label>
+                                <input asp-for="RequisitionNote.FHODAuthorizationDate" class="form-control" />
+                                <span asp-validation-for="RequisitionNote.FHODAuthorizationDate" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+             <div class="form-group">
+                 <label asp-for="RequisitionNote.Whom" class="control-label"></label>
+                 <input asp-for="RequisitionNote.Whom" class="form-control" />
+                 <span asp-validation-for="RequisitionNote.Whom" class="text-danger"></span>
+             </div>
+            -->
+            <hr />
+            <div class="form-group">
+                @*<input id="btnIssueNote" type="submit" value="Issue Note" class="btn btn-primary" />*@
+                <input type="button" id="btnIssueNote" value="Send Request" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    @*function to populate staff dropdownlist based on department selected*@
+    <script type="text/javascript" lang="javascript">
+    $(function () {
+
+     $("#cboDepartment").change(function () {
+         var selectedDepartment = $("#cboDepartment").val();
+         var selectStaff = $("#cboStaff");
+         selectStaff.empty();
+
+         $("#cboStaff").append("<option selected>" + "--Select full name--" + "</option>");
+
+         if (selectedDepartment != null && selectedDepartment != ' ') {
+             $.getJSON('@Url.Action("StaffList")', { departmentcode: selectedDepartment }, function (result) {
+
+                 $.each(result, function (k)
+                 {
+                     var myobj = result[k];
+
+                     var i = 0;
+                     var staffID, firstName, middleName, SurName;
+
+                     $.each(myobj, function (s) {
+                         if (i == 0)
+                             staffID = myobj[s];
+                         if (i == 1)
+                             firstName = myobj[s];
+                         if (i == 2)
+                             middleName = myobj[s];
+                         if (i == 3)
+                         {
+                             SurName = myobj[s];
+
+                             var staffItem = firstName + " " + middleName + " " + SurName + " - " + staffID;
+                             $("#cboStaff").append("<option value=" + staffID + ">" + staffItem + "</option>");
+                         }
+                         i++;
+                     });
+                 });
+
+             });
+         }
+     });
+
+     });</script>
+
+    @*function to return bin card number and unit of measurement*@
+    <script type="text/javascript" lang="javascript">
+       $(function(){
+
+             $("#cboItems").change(function()
+             {
+                 var selectedItem = $("#cboItems option:selected").text();
+                 var bincardNumber = $("#txtBinCardNumber");
+                 var MeasuringUnit = $("#txtMeasuringUnit");
+
+                 //console.log($("#cboItems option:selected").index());
+
+                 bincardNumber.empty();
+                 MeasuringUnit.empty();
+
+                 if(selectedItem != null && selectedItem != ' ')
+                 {
+                     @*console.log('@Url.Action("GetBinCardModel")',{itemDescription: selectedItem});*@
+                     $.getJSON('@Url.Action("GetBinCardModel")',{itemDescription: selectedItem}, function (itemresult){
+                         //console.log(itemresult);
+
+                         var i = 0;
+                         var unitid;
+                         $.each(itemresult, function(b)
+                         {
+                             //console.log(itemresult[b])
+
+                             if (i == 0)
+                                 $("#txtBinCardNumber").val(itemresult[b]);
+                             if(i == 7)
+                                 unitid = itemresult[b];
+                             if (i == 8)
+                                 $("#txtMeasuringUnit").val(itemresult[b] + " - " + unitid);
+                             if (i == 9)
+                                 $("#txtUnitPrice").val(itemresult[b]);
+                             i++;
+                         });
+
+                     });
+                 };
+             });
+
+        })
+    </script>
+
+    @*function to disable controls*@
+    <script type="text/javascript" lang="javascript">$(document).ready(function () {
+            $("#txtQuantityIssued").attr("disabled", "disabled");
+            $("#txtUnitPrice").attr("disabled", "disabled");
+            $("#txtValue").attr("disabled", "disabled");
+            $("#txtBinCardNumber").attr("disabled", "disabled");
+            $("#txtMeasuringUnit").attr("disabled", "disabled");
+
+        });</script>
+
+    @*function to add input value from html controls to html table*@
+    <script type="text/javascript" lang="javascript">
+
+        $("body").on("click", "#btnAdd", function () {
+            //Reference various form controls.
+
+            var itemDescription = $("#cboItems option:selected").text() + " - " + $("#cboItems").val();
+            var unit = $("#txtMeasuringUnit");
+            var qtyRequested = $("#txtQuantityRequested");
+            var qtyIssued = $("#txtQuantityIssued");
+            var bincardNumber = $("#txtBinCardNumber");
+            var remarks = $("#txtRemarks");
+            var unitPrice = $("#txtUnitPrice")
+
+            @*Get the reference of the Table's TBODY element.*@
+            var tBody = $("#tblItemsRequested > TBODY")[0];
+
+
+            if ($("TD", row).eq(0).html() == itemDescription)
+            {
+                alert("The item " + itemDescription + " exist, kindly select a different item");
+                unit.val("");
+                qtyRequested.val("0");
+                bincardNumber.val("");
+                remarks.val("");
+
+                $("#cboItems").find("option:first").prop("selected", true);
+
+                return;
+            }
+
+            if (qtyRequested.val() == "0")
+            {
+                alert("Please the quantity requested cannot be 0, enter a number greater than 0");
+                $("#xtQuantityRequested").focus();
+
+                return;
+            }
+
+            @*Add Row.*@
+            var row = tBody.insertRow(-1);
+
+            @*Add item description cell.*@
+            var cell = $(row.insertCell(-1));
+            cell.html(itemDescription);
+
+            @*Add Unit cell.*@
+            cell = $(row.insertCell(-1));
+            cell.html(unit.val());
+
+            @*Add quantity requested cell.*@
+            cell = $(row.insertCell(-1));
+            cell.html(qtyRequested.val());
+
+            @*Add quantity issued cell.*@
+            cell = $(row.insertCell(-1));
+            cell.html(qtyIssued.val());
+
+
+            @* Add quantity unit price/cost cell.*@
+            cell = $(row.insertCell(-1));
+            cell.html(unitPrice.val());
+
+
+            //Add bin card number cell
+            cell = $(row.insertCell(-1))
+            cell.html(bincardNumber.val())
+
+            @*Add remark cell.*@
+            cell = $(row.insertCell(-1));
+            cell.html(remarks.val());
+
+            @*Add Button cell.*@
+            cell = $(row.insertCell(-1));
+            var btnRemove = $("<input />");
+            btnRemove.attr("type", "button");
+            btnRemove.attr("onclick", "Remove(this);");
+            btnRemove.val("Remove");
+            cell.append(btnRemove);
+
+
+           //Clear the controls.
+            $("#cboItems").find("option:first").prop("selected", true);
+            unit.val("");
+            qtyRequested.val("0");
+            bincardNumber.val("");
+            remarks.val("");
+            unitPrice.val("0");
+        });
+
+
+        function Remove(button) {
+            //Determine the reference of the Row using the Button.
+
+            var row = $(button).closest("TR");
+            var name = $("TD", row).eq(0).html();
+
+            if (confirm("Do you want to delete: " + name)) {
+                //Get the reference of the Table.
+                var table = $("#tblItemsRequested")[0];
+
+                //Delete the Table row using it's Index.
+                table.deleteRow(row[0].rowIndex);
+            }
+        };
+
+    </script>
+
+    <script type="text/javascript" lang="javascript">
+
+    $("body").on("click", "#btnIssueNote", function () {
+
+        var RequisitionNotes = new Array();
+
+        //Loop through the Table rows and build a JSON array.
+        $("#tblItemsRequested TBODY TR").each(function () {
+            var row = $(this);
+
+            var RequisitionNote = {
+                RequisitionNumber: $("#txtRequistionNumber").val(),
+                RequisitionDate: $("#dtRequisitonDate").val(),
+                LocationCode: $("#cboLocation").val(),
+                DepartmentCode: parseInt($("#cboDepartment").val()),
+                StaffIdentificationNumber: $("#cboStaff").val(),
+
+                ItemCode: row.find("TD").eq(0).html().slice(-4),
+                UnitId: parseInt(row.find("TD").eq(1).html().slice(-3)),
+                QuantityRequested: parseInt(row.find("TD").eq(2).html()),
+                QuantityApproved: parseInt(row.find("TD").eq(3).html()), /*the approved and issued quantities at this request stage will always be 0, so the same values are passed to both fields*/
+                QuantityIssued: parseInt(row.find("TD").eq(3).html()),
+                UnitPrice: parseFloat(row.find("TD").eq(4).html()),
+                BinCardNumber: row.find("TD").eq(5).html(),
+                Remarks: row.find("TD").eq(6).html(),
+
+                /*UnitPrice: parseFloat($("#txtUnitPrice").val()),*/
+                Value: parseFloat($("#txtValue").val()),
+
+                FHODAuthorization: " ",
+                FHODAuthorizationDate: $("#dtRequisitonDate").val(),
+
+                IssuedBy: " ",
+                IssuedDate: $("#dtRequisitonDate").val(),
+
+                Status: "Pending Approval",
+            }
+
+            RequisitionNotes.push(RequisitionNote);
+
+        });
+
+        ///Send the JSON array to Controller using AJAX.
+        console.log(RequisitionNotes);
+
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("InsertRecords")",
+                    headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                    contentType: "application/json",
+                    dataType: "json",
+                    data: JSON.stringify(RequisitionNotes),
+                    success: function (r) {
+                        alert(r + " record(s) inserted.");
+                    },
+                    error: function (e) {
+                        console.log(e);
+                    }
+
+                });
+        });
+    </script>
+
+}

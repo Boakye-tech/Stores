@@ -1,0 +1,106 @@
+﻿@model Stores.Models.ViewModels.BinCardVM
+
+
+@{
+    ViewData["Title"] = "Index";
+
+}
+
+<form method="post" asp-action="CreateBinCard">
+    <div class="border p-3">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="text-center">
+            <h2 class="text-primary">CREATE NEW BIN CARD</h2>
+        </div>
+
+        <hr />
+        <br />
+
+        <div class="row">
+            <div class="col-12">
+
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="BinCard.BinCardNumber"></label>
+                        <input asp-for="BinCard.BinCardNumber" class="form-control" />
+                        <span asp-validation-for="BinCard.BinCardNumber" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-5">
+                        <label asp-for="BinCard.UnitId"></label>
+                        <select asp-for="BinCard.UnitId" asp-items="@Model.UnitDropDown" class="form-control">
+                            <option selected>--Select Stock Unit--</option>
+                        </select>
+                        <span asp-validation-for="BinCard.UnitId" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-8">
+                        <label asp-for="BinCard.ItemCode"></label>
+                        <select asp-for="BinCard.ItemCode" asp-items="@Model.TypeDropDown" class="form-control">
+                            <option selected>--Select An Item--</option>
+                        </select>
+                        <span asp-validation-for="BinCard.ItemCode" class="text-danger"></span>
+                    </div>
+                </div>
+                <br />
+                <div class="form-group row">
+                    <div class="col-3">
+                        <label asp-for="BinCard.MaximumStockLevel"></label>
+                        <input asp-for="BinCard.MaximumStockLevel" class="form-control" />
+                        <span asp-validation-for="BinCard.MaximumStockLevel" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-3">
+                        <label asp-for="BinCard.MinimumStockLevel"></label>
+                        <input asp-for="BinCard.MinimumStockLevel" class="form-control" />
+                        <span asp-validation-for="BinCard.MinimumStockLevel" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-3">
+                        <label asp-for="BinCard.ReOrderLevel"></label>
+                        <input asp-for="BinCard.ReOrderLevel" class="form-control" />
+                        <span asp-validation-for="BinCard.ReOrderLevel" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-3">
+                        <label asp-for="BinCard.UnitPrice"></label>
+                        <input asp-for="BinCard.UnitPrice" class="form-control" />
+                        <span asp-validation-for="BinCard.UnitPrice" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-8">
+                        <label asp-for="BinCard.LocationCode"></label>
+                        <select asp-for="BinCard.LocationCode" asp-items="@Model.LocationDropDown" class="form-control">
+                            <option selected>--Select A Location--</option>
+                        </select>
+                        <span asp-validation-for="BinCard.LocationCode" class="text-danger"></span>
+                    </div>
+                </div>
+                <br />
+                <div class="form-group row">
+                    <div class="col-8 text-center offset-2 row">
+                        <div class="col">
+                            <input type="submit" class="btn btn-info w-75" value="Create Bin Card" />
+                        </div>
+                        <div class="col">
+                            <a asp-controller="BinCard" asp-action="Index" class="btn btn-secondary w-75">Back</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts
+{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

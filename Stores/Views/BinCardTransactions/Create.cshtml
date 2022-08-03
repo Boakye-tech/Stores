@@ -1,0 +1,201 @@
+﻿@model Stores.ViewModels.BinCardTransactionsVM;
+
+
+@{
+    ViewData["Title"] = "CREATE";
+
+}
+<head>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <!--
+    <script type="text/javascript" language="javascript">
+        $(document).ready(function () { EnableDisableControls(); });
+
+        function EnableDisableControls()
+        {
+            var selectedvalue = $('#<%=cboTransactionType.ClientID%>').val();
+            if (selectedvalue == "ISSUED - ERROR")
+            {
+                $("#idReceieved").hide();
+
+            }
+        }
+    </script>
+    -->
+
+    <script type="text/javascript" lang="javascript">$(function () {
+
+    $("#cboTransactionType").change(function ()
+    {
+        if ($("#cboTransactionType option:selected").text() == "ISSUED - ERROR")
+        {
+            $("#txtIssuedNoteNumber").removeAttr("disabled");
+            $("#txtQuantityIssued").removeAttr("disabled");
+        }
+
+        if ($("#cboTransactionType option:selected").text() == "RECEIVED - ERROR")
+        {
+            $("#txtReceievedNoteNumber").removeAttr("disabled", "disabled");
+            $("#txtQuantityReceived").removeAttr("disabled", "disabled");
+
+        }
+
+        if ($("#cboTransactionType option:selected").text() == "OPENING BALANCE")
+        {
+            $("#txtBalance").removeAttr("disabled", "disabled");
+            $("#txtReceievedNoteNumber").attr("disabled", "disabled");
+            $("#txtQuantityReceived").attr("disabled", "disabled");
+            $("#txtIssuedNoteNumber").attr("disabled", "disabled");
+            $("#txtQuantityIssued").attr("disabled", "disabled");
+
+        }
+
+     });
+   });</script>
+</head>
+
+
+<body>
+
+    <form method="post" asp-action="Create">
+        <input asp-for="BinCardModel.BinCardNumber" hidden />
+        <div class="border p-3">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="text-center">
+                <h2 class="text-primary">BIN CARD TRANSACTIONS</h2>
+            </div>
+
+            <hr />
+            <br />
+
+            <div class="row">
+                <div class="col-12">
+
+                    <div class="form-group row">
+                        <div class="col-4">
+                            <label asp-for="BinCardModel.BinCardNumber"></label>
+                            <input asp-for="BinCardModel.BinCardNumber" disabled class="form-control" />
+                        </div>
+
+                        <div class="col-5">
+                            <label asp-for="BinCardModel.UnitName"></label>
+                            <input asp-for="BinCardModel.UnitName" disabled class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-8">
+                            <label asp-for="BinCardModel.ItemDescription"></label>
+                            <input asp-for="BinCardModel.ItemDescription" disabled class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-4">
+                            <label asp-for="BinCardModel.MaximumStockLevel"></label>
+                            <input asp-for="BinCardModel.MaximumStockLevel" disabled class="form-control" />
+                        </div>
+
+                        <div class="col-4">
+                            <label asp-for="BinCardModel.MinimumStockLevel"></label>
+                            <input asp-for="BinCardModel.MinimumStockLevel" disabled class="form-control" />
+                        </div>
+
+                        <div class="col-4">
+                            <label asp-for="BinCardModel.ReOrderLevel"></label>
+                            <input asp-for="BinCardModel.ReOrderLevel" disabled class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-8">
+                            <label asp-for="BinCardModel.LocationName"></label>
+                            <input asp-for="BinCardModel.LocationName" disabled class="form-control" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <br />
+            <hr />
+
+            <div class="row">
+                <div class="col-12">
+
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label asp-for="BinCardTransactionsModel.TransactionDate" class="control-label"></label>
+                            <input type="date" asp-for="BinCardTransactionsModel.TransactionDate" class="form-control" />
+                            <span asp-validation-for="BinCardTransactionsModel.TransactionDate" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-8" id="cboTransactionType">
+                            <label asp-for="BinCardTransactionsModel.TransactionTypeId "></label>
+                            <select asp-for="BinCardTransactionsModel.TransactionTypeId" asp-items="@Model.TransTypeDropDown" class="form-control" id="cboTransactionType">
+                                <option selected>--Select A Transaction Type--</option>
+                            </select>
+                            <span asp-validation-for="BinCardTransactionsModel.TransactionTypeId" class="text-danger"></span>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-4">
+                            <label asp-for="BinCardTransactionsModel.GRBNoteNumber"></label>
+                            <input asp-for="BinCardTransactionsModel.GRBNoteNumber" disabled class="form-control" id="txtReceievedNoteNumber"/>
+                        </div>
+
+                        <div class="col-4">
+                            <label asp-for="BinCardTransactionsModel.QuantityReceived"></label>
+                            <input asp-for="BinCardTransactionsModel.QuantityReceived" disabled class="form-control" id="txtQuantityReceived"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-4">
+                            <label asp-for="BinCardTransactionsModel.RequistionNumber"></label>
+                            <input asp-for="BinCardTransactionsModel.RequistionNumber" disabled class="form-control" id="txtIssuedNoteNumber"/>
+                        </div>
+
+                        <div class="col-4">
+                            <label asp-for="BinCardTransactionsModel.QuantityIssued"></label>
+                            <input asp-for="BinCardTransactionsModel.QuantityIssued" disabled class="form-control" id="txtQuantityIssued"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-4">
+                            <label asp-for="BinCardTransactionsModel.Balance"></label>
+                            <input asp-for="BinCardTransactionsModel.Balance" disabled class="form-control" id="txtBalance"/>
+                        </div>
+
+                        <div class="col-8">
+                            <label asp-for="BinCardTransactionsModel.Remarks"></label>
+                            <input asp-for="BinCardTransactionsModel.Remarks" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-8 text-center offset-2 row">
+                            <div class="col">
+                                <input type="submit" class="btn btn-info w-75" value="Add Transaction" />
+                            </div>
+                            <div class="col">
+                                <a asp-controller="BinCardTransactions" asp-action="Index" class="btn btn-secondary w-75">Back</a>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </form>
+</body>
+
+@section Scripts
+{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+
+}
